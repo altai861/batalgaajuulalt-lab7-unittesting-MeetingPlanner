@@ -14,7 +14,7 @@ class RoomTest {
         Room r = new Room("2A01");
         Meeting m = new Meeting(1, 15, 10, 11);
         r.addMeeting(m);
-        assertTrue(r.isBusy(1, 15, 10, 10));
+        assertTrue(r.isBusy(1, 15, 10, 11));
     }
 
     /** 

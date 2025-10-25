@@ -88,7 +88,7 @@ class CalendarTest {
         Calendar cal = new Calendar();
         Meeting m = new Meeting(12, 10, 10, 11);
         cal.addMeeting(m);
-        assertEquals(m, cal.getMeeting(1, 15, 0));
+        assertEquals(m, cal.getMeeting(12, 10, 0));
     }
 
     /** 

@@ -1,0 +1,365 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > CalendarTest</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">edu.sc.csce747.MeetingPlanner</a>
+</div>
+
+<h1>Coverage Summary for Class: CalendarTest (edu.sc.csce747.MeetingPlanner)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">CalendarTest</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (21/21)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (102/102)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package edu.sc.csce747.MeetingPlanner;
+&nbsp;
+&nbsp;import static org.junit.jupiter.api.Assertions.*;
+&nbsp;import org.junit.jupiter.api.Test;
+&nbsp;
+&nbsp;import java.sql.Time;
+&nbsp;import java.util.ArrayList;
+&nbsp;import java.util.List;
+&nbsp;
+<b class="fc">&nbsp;class CalendarTest {</b>
+&nbsp;
+&nbsp;    /** 
+&nbsp;     * Test: Successfully adding a meeting and retrieving it
+&nbsp;     * Description: Checks that addMeeting correctly stores a meeting and getMeeting retrieves it.
+&nbsp;     */
+&nbsp;    @Test
+&nbsp;    void testAddAndGetMeeting() throws TimeConflictException {
+<b class="fc">&nbsp;        Calendar cal = new Calendar();</b>
+<b class="fc">&nbsp;        Meeting m = new Meeting(1, 15, 10, 11);</b>
+<b class="fc">&nbsp;        cal.addMeeting(m);</b>
+<b class="fc">&nbsp;        assertEquals(m, cal.getMeeting(1, 15, 0));</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /** 
+&nbsp;     * Test: Check isBusy returns correct busy status
+&nbsp;     * Description: Ensures isBusy returns true during the meeting and false outside.
+&nbsp;     */
+&nbsp;    @Test
+&nbsp;    void testIsBusyTrueAndFalse() throws TimeConflictException {
+<b class="fc">&nbsp;        Calendar cal = new Calendar();</b>
+<b class="fc">&nbsp;        Meeting m = new Meeting(1, 15, 10, 11);</b>
+<b class="fc">&nbsp;        cal.addMeeting(m);</b>
+<b class="fc">&nbsp;        assertTrue(cal.isBusy(1, 15, 10, 11));</b>
+<b class="fc">&nbsp;        assertFalse(cal.isBusy(1, 15, 11, 12));</b>
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;    @Test
+&nbsp;    void testIsBusyCheckEndTime() throws TimeConflictException {
+<b class="fc">&nbsp;        Calendar cal = new Calendar();</b>
+<b class="fc">&nbsp;        Meeting m = new Meeting(1, 15, 10, 13);</b>
+<b class="fc">&nbsp;        cal.addMeeting(m);</b>
+<b class="fc">&nbsp;        assertTrue(cal.isBusy(1, 15, 9, 12));</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    void checkCheckTimesIllegalHour() throws TimeConflictException {
+<b class="fc">&nbsp;        Calendar cal = new Calendar();</b>
+<b class="fc">&nbsp;        assertThrows(TimeConflictException.class, () -&gt; cal.checkTimes(5, 23, 20, 24));</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    void testAddMeetingOverlapStartTime() throws TimeConflictException {
+<b class="fc">&nbsp;        Calendar cal = new Calendar();</b>
+<b class="fc">&nbsp;        Meeting m1 = new Meeting(10, 5, 10, 14);</b>
+<b class="fc">&nbsp;        cal.addMeeting(m1);</b>
+<b class="fc">&nbsp;        m1.setDescription(&quot;My birthday meeting&quot;);</b>
+&nbsp;
+<b class="fc">&nbsp;        Meeting m2 = new Meeting(10, 5, 12, 15);</b>
+<b class="fc">&nbsp;        m2.setDescription(&quot;My second birthday meeting&quot;);</b>
+&nbsp;
+<b class="fc">&nbsp;        assertThrows(TimeConflictException.class, () -&gt; cal.addMeeting(m2));</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    void testAddMeetingOverlapEndTime() throws TimeConflictException {
+<b class="fc">&nbsp;        Calendar cal = new Calendar();</b>
+<b class="fc">&nbsp;        Meeting m1 = new Meeting(10, 5, 10, 14);</b>
+<b class="fc">&nbsp;        m1.setDescription(&quot;My birthday meeting&quot;);</b>
+&nbsp;
+<b class="fc">&nbsp;        cal.addMeeting(m1);</b>
+&nbsp;
+<b class="fc">&nbsp;        Meeting m2 = new Meeting(10, 5, 9, 13);</b>
+<b class="fc">&nbsp;        m2.setDescription(&quot;My second birthday meeting&quot;);</b>
+&nbsp;
+<b class="fc">&nbsp;        assertThrows(TimeConflictException.class, () -&gt; cal.addMeeting(m2));</b>
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;    @Test
+&nbsp;    void testPrintAgenda() throws TimeConflictException {
+<b class="fc">&nbsp;        Person me = new Person(&quot;Altai&quot;);</b>
+<b class="fc">&nbsp;        Person friend = new Person(&quot;Khangal&quot;);</b>
+<b class="fc">&nbsp;        ArrayList&lt;Person&gt; attendees = new ArrayList&lt;Person&gt;();</b>
+<b class="fc">&nbsp;        Room livingRoom = new Room(&quot;Living Room&quot;);</b>
+<b class="fc">&nbsp;        Room meetingRoom = new Room(&quot;MR 1&quot;);</b>
+<b class="fc">&nbsp;        attendees.add(me);</b>
+<b class="fc">&nbsp;        attendees.add(friend);</b>
+&nbsp;        // Arrange
+<b class="fc">&nbsp;        Calendar cal = new Calendar();</b>
+<b class="fc">&nbsp;        cal.addMeeting(new Meeting(10, 5, 12, 13, attendees, livingRoom, &quot;Birthday party&quot;));</b>
+<b class="fc">&nbsp;        cal.addMeeting(new Meeting(1, 10, 5, 7, attendees, meetingRoom, &quot;Christmas Eve&quot;));</b>
+&nbsp;        // Act
+<b class="fc">&nbsp;        String octoberAgenda = cal.printAgenda(10);</b>
+<b class="fc">&nbsp;        String novemberAgenda = cal.printAgenda(1);</b>
+&nbsp;
+&nbsp;        // Assert
+<b class="fc">&nbsp;        assertTrue(octoberAgenda.contains(&quot;Agenda for 10:&quot;), &quot;Should include the correct month header&quot;);</b>
+<b class="fc">&nbsp;        assertTrue(octoberAgenda.contains(&quot;Birthday party&quot;), &quot;Should list the October meeting&quot;);</b>
+&nbsp;
+<b class="fc">&nbsp;        assertTrue(novemberAgenda.contains(&quot;Agenda for 1:&quot;), &quot;Should include the correct month header&quot;);</b>
+<b class="fc">&nbsp;        assertTrue(novemberAgenda.contains(&quot;Christmas Eve&quot;), &quot;Should list the December meeting&quot;);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;    @Test
+&nbsp;    void testPrintAgendaDay() throws TimeConflictException {
+<b class="fc">&nbsp;        Person me = new Person(&quot;Altai&quot;);</b>
+<b class="fc">&nbsp;        Person friend = new Person(&quot;Khangal&quot;);</b>
+<b class="fc">&nbsp;        ArrayList&lt;Person&gt; attendees = new ArrayList&lt;Person&gt;();</b>
+<b class="fc">&nbsp;        Room livingRoom = new Room(&quot;Living Room&quot;);</b>
+<b class="fc">&nbsp;        Room meetingRoom = new Room(&quot;MR 1&quot;);</b>
+<b class="fc">&nbsp;        attendees.add(me);</b>
+<b class="fc">&nbsp;        attendees.add(friend);</b>
+&nbsp;        // Arrange
+<b class="fc">&nbsp;        Calendar cal = new Calendar();</b>
+<b class="fc">&nbsp;        cal.addMeeting(new Meeting(10, 5, 12, 13, attendees, livingRoom, &quot;Birthday party&quot;));</b>
+<b class="fc">&nbsp;        cal.addMeeting(new Meeting(10, 5, 5, 7, attendees, meetingRoom, &quot;Christmas Eve&quot;));</b>
+&nbsp;        // Act
+<b class="fc">&nbsp;        String octoberFifthAgenda = cal.printAgenda(10, 5);</b>
+&nbsp;
+&nbsp;        // Assert
+<b class="fc">&nbsp;        assertTrue(octoberFifthAgenda.contains(&quot;Agenda for 10/5:&quot;), &quot;Should include the correct month header&quot;);</b>
+<b class="fc">&nbsp;        assertTrue(octoberFifthAgenda.contains(&quot;Birthday party&quot;), &quot;Should list the October meeting&quot;);</b>
+<b class="fc">&nbsp;        assertTrue(octoberFifthAgenda.contains(&quot;Christmas Eve&quot;), &quot;Should list the October meeting&quot;);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /** 
+&nbsp;     * Test: Clear schedule removes all meetings for a day
+&nbsp;     * Description: Ensures that after clearing, the day has no meetings.
+&nbsp;     */
+&nbsp;    @Test
+&nbsp;    void testClearSchedule() throws TimeConflictException {
+<b class="fc">&nbsp;        Calendar cal = new Calendar();</b>
+<b class="fc">&nbsp;        Meeting m = new Meeting(1, 15, 10, 11);</b>
+<b class="fc">&nbsp;        cal.addMeeting(m);</b>
+<b class="fc">&nbsp;        cal.clearSchedule(1, 15);</b>
+<b class="fc">&nbsp;        assertEquals(0, cal.printAgenda(1, 15).length() - (&quot;Agenda for 1/15:\n&quot;.length()));</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /** 
+&nbsp;     * Test: Remove meeting successfully
+&nbsp;     * Description: Checks that a meeting can be removed and is no longer in the calendar.
+&nbsp;     */
+&nbsp;    @Test
+&nbsp;    void testRemoveMeeting() throws TimeConflictException {
+<b class="fc">&nbsp;        Calendar cal = new Calendar();</b>
+<b class="fc">&nbsp;        Meeting m = new Meeting(1, 15, 10, 11);</b>
+<b class="fc">&nbsp;        cal.addMeeting(m);</b>
+<b class="fc">&nbsp;        cal.removeMeeting(1, 15, 0);</b>
+<b class="fc">&nbsp;        assertEquals(0, cal.printAgenda(1, 15).length() - (&quot;Agenda for 1/15:\n&quot;.length()));</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /** 
+&nbsp;     * Test: Add meeting with invalid day (February 35)
+&nbsp;     * Description: Should throw TimeConflictException for invalid day.
+&nbsp;     */
+&nbsp;    @Test
+&nbsp;    void testAddMeetingInvalidDay() {
+<b class="fc">&nbsp;        Calendar cal = new Calendar();</b>
+<b class="fc">&nbsp;        Meeting m = new Meeting(2, 35, 10, 11);</b>
+<b class="fc">&nbsp;        assertThrows(TimeConflictException.class, () -&gt; cal.addMeeting(m));</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /** 
+&nbsp;     * Test: Add meeting with invalid month (13)
+&nbsp;     * Description: Should throw TimeConflictException for invalid month.
+&nbsp;     */
+&nbsp;    @Test
+&nbsp;    void testAddMeetingInvalidMonth() {
+<b class="fc">&nbsp;        Calendar cal = new Calendar();</b>
+<b class="fc">&nbsp;        Meeting m = new Meeting(13, 10, 10, 11);</b>
+<b class="fc">&nbsp;        assertThrows(TimeConflictException.class, () -&gt; cal.addMeeting(m));</b>
+&nbsp;    }
+&nbsp;    
+&nbsp;    /** 
+&nbsp;     * Test: Add meeting with valid month (12)
+&nbsp;     * Description: Should successfully add meeting
+&nbsp;     * @throws TimeConflictException 
+&nbsp;     */
+&nbsp;    @Test
+&nbsp;    void testAddMeetingValidMonth() throws TimeConflictException {
+<b class="fc">&nbsp;        Calendar cal = new Calendar();</b>
+<b class="fc">&nbsp;        Meeting m = new Meeting(11, 10, 10, 11);</b>
+<b class="fc">&nbsp;        cal.addMeeting(m);</b>
+<b class="fc">&nbsp;        assertNotNull(cal.getMeeting(11, 10, 0));</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /** 
+&nbsp;     * Test: Add meeting with illegal times
+&nbsp;     * Description: Checks negative start time and end before start time.
+&nbsp;     */
+&nbsp;    @Test
+&nbsp;    void testAddMeetingIllegalTime() {
+<b class="fc">&nbsp;        Calendar cal = new Calendar();</b>
+<b class="fc">&nbsp;        Meeting m1 = new Meeting(1, 15, -1, 10);</b>
+<b class="fc">&nbsp;        Meeting m2 = new Meeting(1, 15, 12, 10);</b>
+<b class="fc">&nbsp;        assertThrows(TimeConflictException.class, () -&gt; cal.addMeeting(m1));</b>
+<b class="fc">&nbsp;        assertThrows(TimeConflictException.class, () -&gt; cal.addMeeting(m2));</b>
+&nbsp;    }
+&nbsp;    
+&nbsp;    /** 
+&nbsp;     * Test: Add meeting with illegal times
+&nbsp;     * Description: Checks negative start time and end before start time.
+&nbsp;     */
+&nbsp;    @Test
+&nbsp;    void testAddMeetingIllegalMonth() {
+<b class="fc">&nbsp;        Calendar cal = new Calendar();</b>
+<b class="fc">&nbsp;        Meeting m1 = new Meeting(13, 15, 1, 10);</b>
+<b class="fc">&nbsp;        assertThrows(TimeConflictException.class, () -&gt; cal.addMeeting(m1));</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /** 
+&nbsp;     * Test: getMeeting with invalid index
+&nbsp;     * Description: Should throw IndexOutOfBoundsException if index does not exist.
+&nbsp;     */
+&nbsp;    @Test
+&nbsp;    void testGetMeetingInvalidIndex() {
+<b class="fc">&nbsp;        Calendar cal = new Calendar();</b>
+<b class="fc">&nbsp;        assertThrows(IndexOutOfBoundsException.class, () -&gt; cal.getMeeting(1, 15, 5));</b>
+&nbsp;    }
+&nbsp;    
+&nbsp;    /**
+&nbsp;     * Test: getMeeting with illegal date data, should return TimeConflictException.
+&nbsp;     */
+&nbsp;    @Test
+&nbsp;    void testGetMeetingOnInvalidDate() {
+<b class="fc">&nbsp;    	Calendar cal = new Calendar();</b>
+<b class="fc">&nbsp;    	assertThrows(TimeConflictException.class, () -&gt; cal.getMeeting(1, 40, 0));</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /** 
+&nbsp;     * Test: removeMeeting with invalid index
+&nbsp;     * Description: Should throw IndexOutOfBoundsException if index does not exist.
+&nbsp;     */
+&nbsp;    @Test
+&nbsp;    void testRemoveMeetingInvalidIndex() {
+<b class="fc">&nbsp;        Calendar cal = new Calendar();</b>
+<b class="fc">&nbsp;        assertThrows(IndexOutOfBoundsException.class, () -&gt; cal.removeMeeting(1, 15, 5));</b>
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;    @Test
+&nbsp;    void testAddMeetingToNov30th() throws TimeConflictException {
+<b class="fc">&nbsp;        Calendar cal = new Calendar();</b>
+<b class="fc">&nbsp;        Meeting m = new Meeting(11, 30, 10, 11);</b>
+<b class="fc">&nbsp;        cal.addMeeting(m);</b>
+&nbsp;
+&nbsp;        // Check that a meeting exists at the given time
+<b class="fc">&nbsp;        assertNotNull(cal.getMeeting(11, 30, 0));</b>
+&nbsp;    }
+&nbsp;    
+&nbsp;    
+&nbsp;    @Test
+&nbsp;    void testMeetingThatEndsWithinTheHour() throws TimeConflictException {
+<b class="fc">&nbsp;    	Calendar cal = new Calendar();</b>
+<b class="fc">&nbsp;    	Meeting m = new Meeting(11, 29, 10, 11);</b>
+<b class="fc">&nbsp;    	cal.addMeeting(m);</b>
+<b class="fc">&nbsp;    	assertNotNull(cal.getMeeting(11, 29, 0));</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2025-11-02 16:57</div>
+</div>
+</body>
+</html>

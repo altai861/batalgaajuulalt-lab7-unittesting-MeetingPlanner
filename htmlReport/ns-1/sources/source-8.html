@@ -1,0 +1,167 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > PersonTest</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">edu.sc.csce747.MeetingPlanner</a>
+</div>
+
+<h1>Coverage Summary for Class: PersonTest (edu.sc.csce747.MeetingPlanner)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">PersonTest</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (4/4)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (4/4)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (17/17)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package edu.sc.csce747.MeetingPlanner;
+&nbsp;
+&nbsp;import static org.junit.jupiter.api.Assertions.*;
+&nbsp;
+&nbsp;import java.util.ArrayList;
+&nbsp;
+&nbsp;import org.junit.jupiter.api.Test;
+&nbsp;
+<b class="fc">&nbsp;class PersonTest {</b>
+&nbsp;
+&nbsp;    /** 
+&nbsp;     * Test: Add meeting to person&#39;s calendar
+&nbsp;     * Description: Person can successfully add a meeting to their calendar.
+&nbsp;     */
+&nbsp;    @Test
+&nbsp;    void testAddMeeting() throws TimeConflictException {
+<b class="fc">&nbsp;        Person p = new Person(&quot;Alice&quot;);</b>
+<b class="fc">&nbsp;        Meeting m = new Meeting(1, 10, 9, 10);</b>
+<b class="fc">&nbsp;        p.addMeeting(m);</b>
+<b class="fc">&nbsp;        assertTrue(p.isBusy(1, 10, 9, 9));</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /** 
+&nbsp;     * Test: Person isBusy throws TimeConflictException for invalid time
+&nbsp;     * Description: Using invalid month/day should raise exception.
+&nbsp;     */
+&nbsp;    @Test
+&nbsp;    void testIsBusyInvalid() {
+<b class="fc">&nbsp;        Person p = new Person(&quot;Alice&quot;);</b>
+<b class="fc">&nbsp;        assertThrows(TimeConflictException.class, () -&gt; p.isBusy(0, 10, 9, 10));</b>
+<b class="fc">&nbsp;        assertThrows(TimeConflictException.class, () -&gt; p.isBusy(1, 32, 9, 10));</b>
+&nbsp;    }
+&nbsp;    
+&nbsp;    @Test
+&nbsp;    void testVacationScheduling() throws TimeConflictException {
+<b class="fc">&nbsp;        Person alice = new Person(&quot;Alice&quot;);</b>
+&nbsp;
+<b class="fc">&nbsp;        Meeting singleDayVacation = new Meeting(1, 10, 0, 23, new ArrayList&lt;&gt;(), new Room(&quot;2A01&quot;), &quot;Vacation&quot;);</b>
+<b class="fc">&nbsp;        alice.addMeeting(singleDayVacation);</b>
+&nbsp;  
+<b class="fc">&nbsp;        assertTrue(alice.isBusy(1, 10, 0, 23), &quot;Alice should be busy for single-day vacation&quot;);</b>
+&nbsp;
+<b class="fc">&nbsp;        for (int day = 15; day &lt;= 17; day++) {</b>
+<b class="fc">&nbsp;            Meeting multiDayVacation = new Meeting(1, day, 0, 23, new ArrayList&lt;&gt;(), new Room(&quot;2A01&quot;), &quot;Vacation&quot;);</b>
+<b class="fc">&nbsp;            alice.addMeeting(multiDayVacation);</b>
+&nbsp;        }
+<b class="fc">&nbsp;        for (int day = 15; day &lt;= 17; day++) {</b>
+<b class="fc">&nbsp;            assertTrue(alice.isBusy(1, day, 0, 23), &quot;Alice should be busy for day &quot; + day + &quot; of multi-day vacation&quot;);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2025-11-02 16:57</div>
+</div>
+</body>
+</html>

@@ -24,6 +24,29 @@ class MeetingTest {
         assertEquals(attendees, m.getAttendees());
     }
 
+    @Test
+    void testMeetingConstructor() {
+        Meeting m = new Meeting(10, 5);
+        m.setDescription("My birthday");
+        assertEquals("My birthday", m.getDescription());
+    }
+
+    @Test
+    void testMeetingClassSetters() {
+        Meeting m = new Meeting(10, 5, 10, 11);
+        Room room = new Room("B-room");
+        m.setMonth(9);
+        m.setDay(10);
+        m.setStartTime(15);
+        m.setEndTime(20);
+        m.setRoom(room);
+
+        assertEquals(9 , m.getMonth());
+        assertEquals(10 , m.getDay());
+        assertEquals(15 , m.getStartTime());
+        assertEquals(20 , m.getEndTime());
+        assertEquals(room, m.getRoom());
+    }
     /** 
      * Test: Add and remove attendee
      * Description: Ensures attendees can be added and removed from a meeting.

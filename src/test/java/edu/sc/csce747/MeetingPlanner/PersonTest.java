@@ -48,4 +48,56 @@ class PersonTest {
             assertTrue(alice.isBusy(1, day, 0, 23), "Alice should be busy for day " + day + " of multi-day vacation");
         }
     }
+
+    @Test
+    void testPersonEmptyConstructor() throws TimeConflictException {
+        Person p = new Person();
+        assertEquals("", p.getName());
+    }
+
+
+    @Test
+    void testAddMeetingOnPerson() throws TimeConflictException {
+        Person alice = new Person("Altai");
+        Meeting m = new Meeting(20, 10, 9, 10);
+        assertThrows(TimeConflictException.class, () -> alice.addMeeting(m));
+    }
+
+    @Test
+    void testPrintAgendaOfPerson() throws TimeConflictException {
+        Person alice = new Person("Altai");
+        Meeting m = new Meeting(10, 10, 9, 10,  new ArrayList<>(), new Room("2A01"), "Agenda");
+        alice.addMeeting(m);
+        m.setDescription("Let's go");
+        String agenda = alice.printAgenda(10, 10);
+        assertTrue(agenda.contains("Let's go"));
+
+        String agendaMonth = alice.printAgenda(10);
+        assertTrue(agendaMonth.contains("Let's go"));
+    }
+
+    @Test
+    void testGetMeeting() throws TimeConflictException {
+        Person alice = new Person("Altai");
+        Meeting m = new Meeting(10, 10, 9, 10,  new ArrayList<>(), new Room("2A01"), "Agenda");
+        alice.addMeeting(m);
+        m.setDescription("Let's go");
+
+        assertNotNull(alice.getMeeting(10, 10, 0));
+    }
+
+    @Test
+    void testRemoveMeeting() throws TimeConflictException {
+        Person alice = new Person("Altai");
+        Meeting m = new Meeting(10, 10, 9, 10,  new ArrayList<>(), new Room("2A01"), "Agenda");
+        alice.addMeeting(m);
+        m.setDescription("Let's go");
+
+        Meeting m2 = new Meeting(10, 10, 11, 12,  new ArrayList<>(), new Room("2A023"), "Agenda");
+        alice.addMeeting(m2);
+        m2.setDescription("Let's go");
+
+        alice.removeMeeting(10, 10, 1);
+        assertThrows(IndexOutOfBoundsException.class, () -> alice.getMeeting(10, 10, 1));
+    }
 }

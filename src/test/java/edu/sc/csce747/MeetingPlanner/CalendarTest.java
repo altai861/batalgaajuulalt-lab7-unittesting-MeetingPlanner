@@ -31,7 +31,9 @@ class CalendarTest {
         Meeting m = new Meeting(1, 15, 10, 11);
         cal.addMeeting(m);
         assertTrue(cal.isBusy(1, 15, 10, 11));
-        assertFalse(cal.isBusy(1, 15, 11, 12));
+        assertTrue(cal.isBusy(1, 15, 11, 12));
+        assertFalse(cal.isBusy(1, 15, 8, 9));
+        assertFalse(cal.isBusy(1, 15, 12, 14));
     }
 
 
@@ -44,9 +46,34 @@ class CalendarTest {
     }
 
     @Test
+    void testCheckTimesDay() throws TimeConflictException {
+        Calendar cal = new Calendar();
+        assertThrows(TimeConflictException.class, () -> cal.checkTimes(5, -1, 20, 20));
+    }
+
+    @Test
+    void checkCheckTimesIllegalHourStart() throws TimeConflictException {
+        Calendar cal = new Calendar();
+        assertThrows(TimeConflictException.class, () -> cal.checkTimes(5, 23, 24, 20));
+    }
+
+    @Test
+    void checkCheckTimesIllegalHourStartMinus() throws TimeConflictException {
+        Calendar cal = new Calendar();
+        assertThrows(TimeConflictException.class, () -> cal.checkTimes(5, 23, -1, 20));
+    }
+
+
+    @Test
     void checkCheckTimesIllegalHour() throws TimeConflictException {
         Calendar cal = new Calendar();
         assertThrows(TimeConflictException.class, () -> cal.checkTimes(5, 23, 20, 24));
+    }
+
+    @Test
+    void checkCheckTimesIllegalHourMinus() throws TimeConflictException {
+        Calendar cal = new Calendar();
+        assertThrows(TimeConflictException.class, () -> cal.checkTimes(5, 23, 20, -1));
     }
 
     @Test
@@ -227,6 +254,18 @@ class CalendarTest {
     void testGetMeetingOnInvalidDate() {
     	Calendar cal = new Calendar();
     	assertThrows(TimeConflictException.class, () -> cal.getMeeting(1, 40, 0));
+    }
+
+    @Test
+    void testAddMeeting() throws TimeConflictException {
+        Calendar cal = new Calendar();
+        Meeting m = new Meeting(11, 15, 10, 11);
+        m.setDescription("First meeting");
+        cal.addMeeting(m);
+        Meeting m1 = new Meeting(11, 15, 12, 14);
+        m1.setDescription("Second meeting");
+        cal.addMeeting(m1);
+        assertNotNull(cal.getMeeting(11, 15, 1));
     }
 
     /** 

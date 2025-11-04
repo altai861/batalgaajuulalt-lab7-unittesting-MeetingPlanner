@@ -59,7 +59,7 @@ Current scope:     <a href="../../index.html">all classes</a>
     100%
   </span>
   <span class="absValue">
-    (4/4)
+    (9/9)
   </span>
 </td>
 <td class="coverageStat">
@@ -75,7 +75,7 @@ Current scope:     <a href="../../index.html">all classes</a>
     100%
   </span>
   <span class="absValue">
-    (17/17)
+    (44/44)
   </span>
 </td>
 </tr>
@@ -137,6 +137,58 @@ Current scope:     <a href="../../index.html">all classes</a>
 <b class="fc">&nbsp;            assertTrue(alice.isBusy(1, day, 0, 23), &quot;Alice should be busy for day &quot; + day + &quot; of multi-day vacation&quot;);</b>
 &nbsp;        }
 &nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    void testPersonEmptyConstructor() throws TimeConflictException {
+<b class="fc">&nbsp;        Person p = new Person();</b>
+<b class="fc">&nbsp;        assertEquals(&quot;&quot;, p.getName());</b>
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;    @Test
+&nbsp;    void testAddMeetingOnPerson() throws TimeConflictException {
+<b class="fc">&nbsp;        Person alice = new Person(&quot;Altai&quot;);</b>
+<b class="fc">&nbsp;        Meeting m = new Meeting(20, 10, 9, 10);</b>
+<b class="fc">&nbsp;        assertThrows(TimeConflictException.class, () -&gt; alice.addMeeting(m));</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    void testPrintAgendaOfPerson() throws TimeConflictException {
+<b class="fc">&nbsp;        Person alice = new Person(&quot;Altai&quot;);</b>
+<b class="fc">&nbsp;        Meeting m = new Meeting(10, 10, 9, 10,  new ArrayList&lt;&gt;(), new Room(&quot;2A01&quot;), &quot;Agenda&quot;);</b>
+<b class="fc">&nbsp;        alice.addMeeting(m);</b>
+<b class="fc">&nbsp;        m.setDescription(&quot;Let&#39;s go&quot;);</b>
+<b class="fc">&nbsp;        String agenda = alice.printAgenda(10, 10);</b>
+<b class="fc">&nbsp;        assertTrue(agenda.contains(&quot;Let&#39;s go&quot;));</b>
+&nbsp;
+<b class="fc">&nbsp;        String agendaMonth = alice.printAgenda(10);</b>
+<b class="fc">&nbsp;        assertTrue(agendaMonth.contains(&quot;Let&#39;s go&quot;));</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    void testGetMeeting() throws TimeConflictException {
+<b class="fc">&nbsp;        Person alice = new Person(&quot;Altai&quot;);</b>
+<b class="fc">&nbsp;        Meeting m = new Meeting(10, 10, 9, 10,  new ArrayList&lt;&gt;(), new Room(&quot;2A01&quot;), &quot;Agenda&quot;);</b>
+<b class="fc">&nbsp;        alice.addMeeting(m);</b>
+<b class="fc">&nbsp;        m.setDescription(&quot;Let&#39;s go&quot;);</b>
+&nbsp;
+<b class="fc">&nbsp;        assertNotNull(alice.getMeeting(10, 10, 0));</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    void testRemoveMeeting() throws TimeConflictException {
+<b class="fc">&nbsp;        Person alice = new Person(&quot;Altai&quot;);</b>
+<b class="fc">&nbsp;        Meeting m = new Meeting(10, 10, 9, 10,  new ArrayList&lt;&gt;(), new Room(&quot;2A01&quot;), &quot;Agenda&quot;);</b>
+<b class="fc">&nbsp;        alice.addMeeting(m);</b>
+<b class="fc">&nbsp;        m.setDescription(&quot;Let&#39;s go&quot;);</b>
+&nbsp;
+<b class="fc">&nbsp;        Meeting m2 = new Meeting(10, 10, 11, 12,  new ArrayList&lt;&gt;(), new Room(&quot;2A023&quot;), &quot;Agenda&quot;);</b>
+<b class="fc">&nbsp;        alice.addMeeting(m2);</b>
+<b class="fc">&nbsp;        m2.setDescription(&quot;Let&#39;s go&quot;);</b>
+&nbsp;
+<b class="fc">&nbsp;        alice.removeMeeting(10, 10, 1);</b>
+<b class="fc">&nbsp;        assertThrows(IndexOutOfBoundsException.class, () -&gt; alice.getMeeting(10, 10, 1));</b>
+&nbsp;    }
 &nbsp;}
 </code>
 </pre>
@@ -161,7 +213,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 
 <div class="footer">
     
-    <div style="float:right;">generated on 2025-11-02 16:56</div>
+    <div style="float:right;">generated on 2025-11-04 20:53</div>
 </div>
 </body>
 </html>

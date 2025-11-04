@@ -3,6 +3,8 @@ package edu.sc.csce747.MeetingPlanner;
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
+
 class OrganizationTest {
 
     /** 
@@ -45,5 +47,19 @@ class OrganizationTest {
     void testGetEmployeeInvalid() {
         Organization org = new Organization();
         assertThrows(Exception.class, () -> org.getEmployee("Unknown Name"));
+    }
+
+    @Test
+    void testGetEmployees() {
+        Organization org = new Organization();
+        ArrayList<Person> emps = org.getEmployees();
+        assertEquals(5, emps.size());
+    }
+
+    @Test
+    void testGetRooms() {
+        Organization org = new Organization();
+        ArrayList<Room> rooms = org.getRooms();
+        assertEquals(5, rooms.size());
     }
 }

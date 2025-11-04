@@ -64,10 +64,10 @@ Current scope:     <a href="../../index.html">all classes</a>
 </td>
 <td class="coverageStat">
   <span class="percent">
-    84.6%
+    100%
   </span>
   <span class="absValue">
-    (44/52)
+    (52/52)
   </span>
 </td>
 <td class="coverageStat">
@@ -148,9 +148,9 @@ Current scope:     <a href="../../index.html">all classes</a>
 <b class="fc">&nbsp;		checkTimes(month,day,start,end);</b>
 &nbsp;		
 <b class="fc">&nbsp;		for(Meeting toCheck : occupied.get(month).get(day)){</b>
-<b class="pc">&nbsp;			if(start &gt;= toCheck.getStartTime() &amp;&amp; start &lt;= toCheck.getEndTime()){</b>
+<b class="fc">&nbsp;			if(start &gt;= toCheck.getStartTime() &amp;&amp; start &lt;= toCheck.getEndTime()){</b>
 <b class="fc">&nbsp;				busy=true;</b>
-<b class="pc">&nbsp;			}else if(end &gt;= toCheck.getStartTime() &amp;&amp; end &lt;= toCheck.getEndTime()){</b>
+<b class="fc">&nbsp;			}else if(end &gt;= toCheck.getStartTime() &amp;&amp; end &lt;= toCheck.getEndTime()){</b>
 <b class="fc">&nbsp;				busy=true;</b>
 &nbsp;			}
 &nbsp;		}
@@ -167,7 +167,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;	 */
 &nbsp;	public static void checkTimes(int mMonth,int mDay,int mStart, int mEnd) throws TimeConflictException{
 &nbsp;		// Check for illegal dates
-<b class="pc">&nbsp;		if(mDay&lt; 1 || mDay &gt; 31){</b>
+<b class="fc">&nbsp;		if(mDay&lt; 1 || mDay &gt; 31){</b>
 <b class="fc">&nbsp;			throw new TimeConflictException(&quot;Day does not exist.&quot;);</b>
 &nbsp;		}
 &nbsp;
@@ -176,11 +176,11 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;		}
 &nbsp;
 &nbsp;		// Check for illegal times
-<b class="pc">&nbsp;		if(mStart&lt; 0 || mStart &gt; 23){</b>
+<b class="fc">&nbsp;		if(mStart&lt; 0 || mStart &gt; 23){</b>
 <b class="fc">&nbsp;			throw new TimeConflictException(&quot;Illegal hour.&quot;);</b>
 &nbsp;		}
 &nbsp;
-<b class="pc">&nbsp;		if(mEnd &lt; 0 || mEnd &gt; 23){</b>
+<b class="fc">&nbsp;		if(mEnd &lt; 0 || mEnd &gt; 23){</b>
 <b class="fc">&nbsp;			throw new TimeConflictException(&quot;Illegal hour.&quot;);</b>
 &nbsp;		}
 &nbsp;
@@ -211,11 +211,11 @@ Current scope:     <a href="../../index.html">all classes</a>
 <b class="fc">&nbsp;		for(Meeting toCheck : thatDay){</b>
 <b class="fc">&nbsp;			if(!toCheck.getDescription().equals(&quot;Day does not exist&quot;)){</b>
 &nbsp;				// Does the start time fall between this meeting&#39;s start and end times?
-<b class="pc">&nbsp;				if(mStart &gt;= toCheck.getStartTime() &amp;&amp; mStart &lt;= toCheck.getEndTime()){</b>
+<b class="fc">&nbsp;				if(mStart &gt;= toCheck.getStartTime() &amp;&amp; mStart &lt;= toCheck.getEndTime()){</b>
 <b class="fc">&nbsp;					booked = true;</b>
 <b class="fc">&nbsp;					conflict = toCheck;</b>
 &nbsp;					// Does the end time fall between this meeting&#39;s start and end times?
-<b class="pc">&nbsp;				}else if(mEnd &gt;= toCheck.getStartTime() &amp;&amp; mEnd &lt;= toCheck.getEndTime()){</b>
+<b class="fc">&nbsp;				}else if(mEnd &gt;= toCheck.getStartTime() &amp;&amp; mEnd &lt;= toCheck.getEndTime()){</b>
 <b class="fc">&nbsp;					booked = true;</b>
 <b class="fc">&nbsp;					conflict = toCheck;</b>
 &nbsp;				}
@@ -313,7 +313,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 
 <div class="footer">
     
-    <div style="float:right;">generated on 2025-11-02 16:57</div>
+    <div style="float:right;">generated on 2025-11-04 20:54</div>
 </div>
 </body>
 </html>

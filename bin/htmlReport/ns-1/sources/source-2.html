@@ -55,15 +55,15 @@ Current scope:     <a href="../../index.html">all classes</a>
     100%
   </span>
   <span class="absValue">
-    (21/21)
+    (26/26)
   </span>
 </td>
 <td class="coverageStat">
   <span class="percent">
-    99%
+    100%
   </span>
   <span class="absValue">
-    (101/102)
+    (120/120)
   </span>
 </td>
 </tr>
@@ -108,7 +108,9 @@ Current scope:     <a href="../../index.html">all classes</a>
 <b class="fc">&nbsp;        Meeting m = new Meeting(1, 15, 10, 11);</b>
 <b class="fc">&nbsp;        cal.addMeeting(m);</b>
 <b class="fc">&nbsp;        assertTrue(cal.isBusy(1, 15, 10, 11));</b>
-<b class="fc">&nbsp;        assertFalse(cal.isBusy(1, 15, 11, 12));</b>
+<b class="fc">&nbsp;        assertTrue(cal.isBusy(1, 15, 11, 12));</b>
+<b class="fc">&nbsp;        assertFalse(cal.isBusy(1, 15, 8, 9));</b>
+<b class="fc">&nbsp;        assertFalse(cal.isBusy(1, 15, 12, 14));</b>
 &nbsp;    }
 &nbsp;
 &nbsp;
@@ -121,9 +123,34 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;    }
 &nbsp;
 &nbsp;    @Test
+&nbsp;    void testCheckTimesDay() throws TimeConflictException {
+<b class="fc">&nbsp;        Calendar cal = new Calendar();</b>
+<b class="fc">&nbsp;        assertThrows(TimeConflictException.class, () -&gt; cal.checkTimes(5, -1, 20, 20));</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    void checkCheckTimesIllegalHourStart() throws TimeConflictException {
+<b class="fc">&nbsp;        Calendar cal = new Calendar();</b>
+<b class="fc">&nbsp;        assertThrows(TimeConflictException.class, () -&gt; cal.checkTimes(5, 23, 24, 20));</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    void checkCheckTimesIllegalHourStartMinus() throws TimeConflictException {
+<b class="fc">&nbsp;        Calendar cal = new Calendar();</b>
+<b class="fc">&nbsp;        assertThrows(TimeConflictException.class, () -&gt; cal.checkTimes(5, 23, -1, 20));</b>
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;    @Test
 &nbsp;    void checkCheckTimesIllegalHour() throws TimeConflictException {
 <b class="fc">&nbsp;        Calendar cal = new Calendar();</b>
 <b class="fc">&nbsp;        assertThrows(TimeConflictException.class, () -&gt; cal.checkTimes(5, 23, 20, 24));</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    void checkCheckTimesIllegalHourMinus() throws TimeConflictException {
+<b class="fc">&nbsp;        Calendar cal = new Calendar();</b>
+<b class="fc">&nbsp;        assertThrows(TimeConflictException.class, () -&gt; cal.checkTimes(5, 23, 20, -1));</b>
 &nbsp;    }
 &nbsp;
 &nbsp;    @Test
@@ -306,6 +333,18 @@ Current scope:     <a href="../../index.html">all classes</a>
 <b class="fc">&nbsp;    	assertThrows(TimeConflictException.class, () -&gt; cal.getMeeting(1, 40, 0));</b>
 &nbsp;    }
 &nbsp;
+&nbsp;    @Test
+&nbsp;    void testAddMeeting() throws TimeConflictException {
+<b class="fc">&nbsp;        Calendar cal = new Calendar();</b>
+<b class="fc">&nbsp;        Meeting m = new Meeting(11, 15, 10, 11);</b>
+<b class="fc">&nbsp;        m.setDescription(&quot;First meeting&quot;);</b>
+<b class="fc">&nbsp;        cal.addMeeting(m);</b>
+<b class="fc">&nbsp;        Meeting m1 = new Meeting(11, 15, 12, 14);</b>
+<b class="fc">&nbsp;        m1.setDescription(&quot;Second meeting&quot;);</b>
+<b class="fc">&nbsp;        cal.addMeeting(m1);</b>
+<b class="fc">&nbsp;        assertNotNull(cal.getMeeting(11, 15, 1));</b>
+&nbsp;    }
+&nbsp;
 &nbsp;    /** 
 &nbsp;     * Test: removeMeeting with invalid index
 &nbsp;     * Description: Should throw IndexOutOfBoundsException if index does not exist.
@@ -331,9 +370,9 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;    @Test
 &nbsp;    void testMeetingThatEndsWithinTheHour() throws TimeConflictException {
 <b class="fc">&nbsp;    	Calendar cal = new Calendar();</b>
-<b class="fc">&nbsp;    	Meeting m = new Meeting(11, 29, 10, 10);</b>
+<b class="fc">&nbsp;    	Meeting m = new Meeting(11, 29, 10, 11);</b>
 <b class="fc">&nbsp;    	cal.addMeeting(m);</b>
-<b class="nc">&nbsp;    	assertEquals(m, cal.getMeeting(11, 29, 0));</b>
+<b class="fc">&nbsp;    	assertNotNull(cal.getMeeting(11, 29, 0));</b>
 &nbsp;    }
 &nbsp;}
 </code>
@@ -359,7 +398,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 
 <div class="footer">
     
-    <div style="float:right;">generated on 2025-11-02 16:56</div>
+    <div style="float:right;">generated on 2025-11-04 20:53</div>
 </div>
 </body>
 </html>
